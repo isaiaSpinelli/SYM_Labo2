@@ -13,11 +13,14 @@
         android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/msgToSend"
         android:layout_width="match_parent"
         android:layout_height="106dp"
         android:background="#CDF44336"
+        android:hint="@string/msgToSend"
+        android:importantForAutofill="no"
+        android:inputType="text"
         android:text="@string/msgToSend" />
 
     <TextView

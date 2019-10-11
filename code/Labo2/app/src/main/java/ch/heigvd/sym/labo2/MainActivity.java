@@ -1,11 +1,17 @@
 package ch.heigvd.sym.labo2;
+/**
+ * @Authors : Simonet Yoann et Spinelli Isaïa
+ * @Date    : 10.11.2019
+ */
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+/**
+ * MainActivity, classe principale qui permet d'appeler toutes les autres activitées
+ */
 public class MainActivity extends AppCompatActivity {
 
     // GUI elements

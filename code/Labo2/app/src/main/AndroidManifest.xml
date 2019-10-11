@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.heigvd.sym.labo2">
 
+    <!-- Permissions  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        <!-- Permet de donnée la configuration via un fichier xml afin de pouvoir communiquer en HTTP sans chiffrement  -->
 		android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Les activitées  -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,8 +25,36 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Point1Activity"
-            android:parentActivityName="ch.heigvd.sym.labo2.Point1Activity">
+        <activity android:name=".AsynchroneActivity"
+            android:parentActivityName="ch.heigvd.sym.labo2.AsynchroneActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".DiffereeActivity"
+            android:parentActivityName="ch.heigvd.sym.labo2.DiffereeActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".CompresseeActivity"
+            android:parentActivityName="ch.heigvd.sym.labo2.CompresseeActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".SerialisationActivity"
+            android:parentActivityName="ch.heigvd.sym.labo2.SerialisationActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".GraphQLActivity"
+            android:parentActivityName="ch.heigvd.sym.labo2.GraphQLActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
