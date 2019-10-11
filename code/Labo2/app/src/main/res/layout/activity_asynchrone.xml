@@ -6,33 +6,33 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/labelEnvoi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Envoi:"
+        android:text="@string/labelEnvoi"
         android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/envoiMessage"
+        android:id="@+id/msgToSend"
         android:layout_width="match_parent"
         android:layout_height="106dp"
         android:background="#CDF44336"
-        android:text="TextView" />
+        android:text="@string/msgToSend" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Réception:"
+        android:text="@string/labelReception"
         android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/receptionMessage"
+        android:id="@+id/msgToGet"
         android:layout_width="match_parent"
         android:layout_height="111dp"
         android:background="#B74CAF50"
-        android:text="TextView" />
+        android:text="@string/msgToGet" />
 
 </LinearLayout>

@@ -1,16 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical" >
 
     <Button
-        android:id="@+id/buttonPoint1"
+        android:id="@+id/buttAsynchrone"
         android:layout_width="205dp"
         android:layout_height="76dp"
-        android:text="Point 1"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="98dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="118dp"
+        android:text="@string/buttonAsync" />
+
+    <Button
+        android:id="@+id/buttDifferee"
+        android:layout_width="205dp"
+        android:layout_height="76dp"
+        android:layout_below="@id/buttAsynchrone"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginRight="118dp"
+        android:text="@string/buttonDiff" />
+
+    <Button
+        android:id="@+id/buttComp"
+        android:layout_width="205dp"
+        android:layout_height="76dp"
+        android:layout_below="@+id/buttSeri"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="95dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginRight="105dp"
+        android:text="@string/buttonComp" />
+
+    <Button
+        android:id="@+id/buttGraphQL"
+        android:layout_width="205dp"
+        android:layout_height="76dp"
+        android:layout_below="@+id/buttComp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="101dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginRight="105dp"
+        android:text="@string/buttonGraphQL" />
+
+    <Button
+        android:id="@+id/buttSeri"
+        android:layout_width="205dp"
+        android:layout_height="76dp"
+        android:layout_below="@+id/buttDifferee"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginLeft="97dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
+        android:text="@string/buttonSeri" />
+
+</RelativeLayout>

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Labo2</string>
+    <!-- Activity_main : Boutons -->
+    <string name="buttonAsync">Asynchrone</string>
+    <string name="buttonDiff">Différée</string>
+    <string name="buttonSeri">Sérialisation</string>
+    <string name="buttonComp">Compressée</string>
+    <string name="buttonGraphQL">GraphQL</string>
+
+    <!-- AsynchroneActivity  -->
+    <string name="labelEnvoi">Envoi :</string>
+    <string name="labelReception">Réception :</string>
+
+    <string name="msgToSend">Envoi :</string>
+    <string name="msgToGet">Envoi :</string>
+
+    <!-- DiffereeActivity  -->
+    <!-- SerialisationActivity  -->
+    <!-- CompresseeActivity  -->
+    <!-- GraphQLActivity  -->
 </resources>
