@@ -21,7 +21,14 @@
         android:hint="@string/msgToSend"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:text="@string/msgToSend" />
+        android:text="@string/msgToSend"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/buttonEnvoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelEnvoi" />
 
     <TextView
         android:id="@+id/textView3"
@@ -36,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="111dp"
         android:background="#B74CAF50"
-        android:text="@string/msgToGet" />
+        android:text="@string/msgToGet"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

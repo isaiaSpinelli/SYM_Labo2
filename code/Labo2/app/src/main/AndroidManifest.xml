@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permet de donnée la configuration via un fichier xml afin de pouvoir communiquer en HTTP sans chiffrement  -->
+
     <application
-        <!-- Permet de donnée la configuration via un fichier xml afin de pouvoir communiquer en HTTP sans chiffrement  -->
 		android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
