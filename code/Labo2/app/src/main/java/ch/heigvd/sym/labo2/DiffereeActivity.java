@@ -1,9 +1,13 @@
 package ch.heigvd.sym.labo2;
 /**
  * @Authors : Simonet Yoann et Spinelli Isaïa
- * @Date    : 10.11.2019$
+ * @Date    : 18.10.2019
  *
  * @reference : https://stackoverflow.com/questions/14037455/inetrnet-connection-checking-thread-android
+ *
+ * Remarque : Afin de tester cette activité, il faut par exemple stop le wifi et envoyer plusieurs requêtes
+ *              et réactiver le wifi pour voir dans les logs toutes les réponses des requêtes
+ *
  */
 
 import android.content.Context;
@@ -34,6 +38,9 @@ public class DiffereeActivity  extends AppCompatActivity {
     private List<String> toSendList = new ArrayList<String>();
     private boolean isRunning = false;
 
+    private final int PERIODE = 5000;
+    private final String SERVEUR = "http://sym.iict.ch/rest/txt";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +59,13 @@ public class DiffereeActivity  extends AppCompatActivity {
                 // lance le thread s'il n'est pas deja lance
                 if (!isRunning) {
                     isRunning = true;
-
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             // Attend d'avoir une connection internet (check toutes les 5 secondes)
                             while (!isConnectedNetwork()){
                                 try {
-                                    Thread.sleep(5000);
+                                    Thread.sleep(PERIODE);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -67,33 +73,36 @@ public class DiffereeActivity  extends AppCompatActivity {
 
                             // Envoi tous les messages en attente
                             try {
-                                SymComManager mcm = new SymComManager();
-                                for (String request : toSendList) {
-                                    mcm.setCommunicationEventListener(response -> {
-                                        reception.setText(response);
-                                        Log.println(Log.INFO, "differre", response);
-                                        return true;
-                                    });
-
-                                    mcm.sendRequest("http://sym.iict.ch/rest/txt", request);
-                                    toSendList.remove(request);
-                                }
+                                sendAllRequest();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             isRunning = false;
                         }
                     }).start();
-                } else {
-                    Toast.makeText(DiffereeActivity.this, "Message trop court", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(DiffereeActivity.this, "Message trop court", Toast.LENGTH_SHORT).show();
             }
 
 
         });
     }
 
+    // Permet d'envoyer toutes les requêtes en attente
+    private void sendAllRequest(){
+        SymComManager mcm = new SymComManager();
+        for (String request : toSendList) {
+            mcm.setCommunicationEventListener(response -> {
+                reception.setText(response);
+                Log.println(Log.INFO, "differre", response);
+                return true;
+            });
 
+            mcm.sendRequest(SERVEUR, request);
+            toSendList.remove(request);
+        }
+    }
 
     // Retourne true si une connection internet est detectee
     private boolean isConnectedNetwork() {
@@ -104,7 +113,7 @@ public class DiffereeActivity  extends AppCompatActivity {
             nf = cm.getActiveNetworkInfo();
         }
 
-        return nf != null && nf.isConnected();
+        return nf != null && nf.isConnectedOrConnecting();
 
     }
 
