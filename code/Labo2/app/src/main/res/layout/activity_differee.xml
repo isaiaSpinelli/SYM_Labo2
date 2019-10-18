@@ -13,12 +13,22 @@
         android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/msgToSend"
         android:layout_width="match_parent"
         android:layout_height="106dp"
         android:background="#CDF44336"
-        android:text="@string/msgToSend" />
+        android:hint="@string/msgToSend"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:text="@string/msgToSend"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/buttEnvoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelEnvoi" />
 
     <TextView
         android:id="@+id/textView3"
