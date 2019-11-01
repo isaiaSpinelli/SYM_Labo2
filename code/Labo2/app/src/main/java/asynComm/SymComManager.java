@@ -66,6 +66,7 @@ public class SymComManager extends AsyncTask {
 
         HttpURLConnection urlSocket = null;
         byte bufferReponse[] = new byte[200] ;
+        InputStream inputError;
 
         String reqest = (String) objects[1];
 
@@ -73,7 +74,17 @@ public class SymComManager extends AsyncTask {
             urlSocket = connection((String) objects[0],(String) objects[2], (String) objects[3], (String) objects[4]);
             urlSocket.getOutputStream().write(reqest.getBytes());
             urlSocket.connect();
-            urlSocket.getInputStream().read(bufferReponse);
+
+            int errorCode = urlSocket.getResponseCode();
+
+            if(errorCode != 200){
+                inputError = urlSocket.getErrorStream();
+                inputError.read(bufferReponse);
+            }else{
+                urlSocket.getInputStream().read(bufferReponse);
+            }
+
+
             urlSocket.disconnect();
 
         } catch (IOException e) {
