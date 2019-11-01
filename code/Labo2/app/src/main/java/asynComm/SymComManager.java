@@ -12,13 +12,16 @@ import java.net.URL;
 public class SymComManager extends AsyncTask {
 
     private static final String TAG = SymComManager.class.getSimpleName();
-
+    private static final String DEFAULT_DATA_TYPE = "text/plain";
 
     private CommunicationEventListener communicationEventListener = null;
 
-
     public void sendRequest(String url, String request) {
-       Object back[] = {(Object) url,(Object)request};
+       sendRequest(url,request,DEFAULT_DATA_TYPE);
+    }
+
+    public void sendRequest(String url, String request,String dataType) {
+       Object back[] = {(Object) url,(Object)request,(Object)dataType};
 
         this.execute(back);
     }
@@ -28,7 +31,7 @@ public class SymComManager extends AsyncTask {
     }
 
 
-    private  HttpURLConnection connection(String url)throws IOException{
+    private  HttpURLConnection connection(String url,String dataType)throws IOException{
 
         HttpURLConnection urlConnection =(HttpURLConnection)new URL(url).openConnection();
 
@@ -37,7 +40,8 @@ public class SymComManager extends AsyncTask {
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("X-Network", "LTE"); //network speed
-            urlConnection.setRequestProperty("Content-Type", "text/plain");
+            urlConnection.setRequestProperty("Content-Type", dataType);
+
 
             return urlConnection;
     }
@@ -51,13 +55,15 @@ public class SymComManager extends AsyncTask {
 
         String reqest = (String) objects[1];
 
+
+
+
+
+
         try {
-            urlSocket = connection((String) objects[0]);
-
+            urlSocket = connection((String) objects[0],(String) objects[2]);
             urlSocket.getOutputStream().write(reqest.getBytes());
-
             urlSocket.connect();
-
             urlSocket.getInputStream().read(bufferReponse);
             urlSocket.disconnect();
 
