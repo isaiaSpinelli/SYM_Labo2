@@ -13,15 +13,26 @@ public class SymComManager extends AsyncTask {
 
     private static final String TAG = SymComManager.class.getSimpleName();
     private static final String DEFAULT_DATA_TYPE = "text/plain";
+    private static final String DEFAULT_ENCODING = "";
+    private static final String DEFAULT_NETWORK = "LTE";
 
     private CommunicationEventListener communicationEventListener = null;
 
     public void sendRequest(String url, String request) {
-       sendRequest(url,request,DEFAULT_DATA_TYPE);
+       sendRequest(url,request,DEFAULT_DATA_TYPE, DEFAULT_ENCODING, DEFAULT_NETWORK );
     }
 
     public void sendRequest(String url, String request,String dataType) {
-       Object back[] = {(Object) url,(Object)request,(Object)dataType};
+       Object back[] = {(Object) url,(Object)request,(Object)dataType, DEFAULT_ENCODING, DEFAULT_NETWORK};
+
+        this.execute(back);
+    }
+
+    /*
+    * Surcharge pour les requêtes compressées
+     */
+    public void sendRequest(String url, String request,String dataType, String Encoding, String Network) {
+        Object back[] = {(Object) url,(Object)request, (Object)dataType, (Object)Encoding, (Object)Network};
 
         this.execute(back);
     }
@@ -31,7 +42,7 @@ public class SymComManager extends AsyncTask {
     }
 
 
-    private  HttpURLConnection connection(String url,String dataType)throws IOException{
+    private  HttpURLConnection connection(String url,String dataType, String Encoding, String Network)throws IOException{
 
         HttpURLConnection urlConnection =(HttpURLConnection)new URL(url).openConnection();
 
@@ -39,8 +50,11 @@ public class SymComManager extends AsyncTask {
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("X-Network", "LTE"); //network speed
+            urlConnection.setRequestProperty("X-Network", Network); //network speed
             urlConnection.setRequestProperty("Content-Type", dataType);
+            if ( !Encoding.equals("") ) {
+                urlConnection.setRequestProperty("X-Content-Encoding", Encoding);
+            }
 
 
             return urlConnection;
@@ -55,13 +69,8 @@ public class SymComManager extends AsyncTask {
 
         String reqest = (String) objects[1];
 
-
-
-
-
-
         try {
-            urlSocket = connection((String) objects[0],(String) objects[2]);
+            urlSocket = connection((String) objects[0],(String) objects[2], (String) objects[3], (String) objects[4]);
             urlSocket.getOutputStream().write(reqest.getBytes());
             urlSocket.connect();
             urlSocket.getInputStream().read(bufferReponse);

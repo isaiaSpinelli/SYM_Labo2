@@ -82,7 +82,7 @@ public class DiffereeActivity  extends AppCompatActivity {
                     }).start();
                 }
             } else {
-                Toast.makeText(DiffereeActivity.this, "Message trop court", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DiffereeActivity.this, "Message vide", Toast.LENGTH_SHORT).show();
             }
 
 
