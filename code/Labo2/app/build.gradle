@@ -35,7 +35,7 @@ dependencies{
      implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
 
      // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
-    compile('org.simpleframework:simple-xml:2.7.+'){
+    implementation('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'

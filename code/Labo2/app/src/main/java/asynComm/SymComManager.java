@@ -65,7 +65,7 @@ public class SymComManager extends AsyncTask {
     protected String doInBackground(Object[] objects) {
 
         HttpURLConnection urlSocket = null;
-        byte bufferReponse[] = new byte[200] ;
+        byte bufferReponse[] = new byte[2000] ;
         InputStream inputError;
 
         String reqest = (String) objects[1];
@@ -100,7 +100,14 @@ public class SymComManager extends AsyncTask {
     @Override
     protected void onPostExecute(Object s) {
         super.onPostExecute(s);
-        communicationEventListener.handleServerResponse( (String) s);
+
+        try {
+            communicationEventListener.handleServerResponse( (String) s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

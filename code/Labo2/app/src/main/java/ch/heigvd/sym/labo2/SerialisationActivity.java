@@ -5,6 +5,7 @@ package ch.heigvd.sym.labo2;
  */
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,16 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Default;
+
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Order;
-import org.simpleframework.xml.Path;
+
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.Text;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.StringWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
+
 import java.util.List;
 
 import asynComm.SymComManager;
@@ -45,9 +49,11 @@ public class SerialisationActivity  extends AppCompatActivity {
         envoiJSON = findViewById(R.id.buttJSON);
         envoiXML = findViewById(R.id.buttXML);
 
+        reception.setMovementMethod(new ScrollingMovementMethod());
+
         envoiJSON.setOnClickListener((v) -> {
             SymComManager mcm = new SymComManager() ;
-            person isaia  = new person("Isaia","Spinel1i","m",new Phone("0984","home"));
+            Person isaia  = new Person("Isaia","Spinel1i","m",new Phone("0984","home"));
             Gson jRequest = new Gson();
             envoi.setText(jRequest.toJson(isaia));
 
@@ -58,7 +64,7 @@ public class SerialisationActivity  extends AppCompatActivity {
                 reception.setText(response);
 
                 response = response.substring(0,response.indexOf("info")-2) + "}";
-                person isaiaDeserial = jRequest.fromJson(response,person.class);
+                Person isaiaDeserial = jRequest.fromJson(response,Person.class);
                 Log.println(Log.INFO,"Serialisation",isaiaDeserial.toString());
                 return true;
             });
@@ -69,12 +75,13 @@ public class SerialisationActivity  extends AppCompatActivity {
         });
 
         envoiXML.setOnClickListener((v) -> {
+
+            List<Person> list = new ArrayList();
+
+            list.add(new Person("spinelli","Isaia","m",new Phone("0786571225","mobile")));
+            list.add(new Person("simonet","yoann","m",new Phone("546565465","home")));
             SymComManager mcm = new SymComManager() ;
-
-
-            person isaia  = new person("Isaia","Spinel1i","m",new Phone("09847745","home"));
-
-            directory d = new directory(isaia);
+            Directory d = new Directory(list,null);
             Serializer serializer = new Persister();
             StringWriter sw = new StringWriter();
             try {
@@ -86,41 +93,74 @@ public class SerialisationActivity  extends AppCompatActivity {
 
             Log.println(Log.INFO,"Serialisation XML",sw.toString());
 
-            String xmlString =  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\"><directory/>";
+            String xmlString =  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\">" + sw.toString();
 
 
             envoi.setText(xmlString);
 
 
-            Log.println(Log.INFO,"Serialisation XML",xmlString);
-
             mcm.sendRequest( "http://sym.iict.ch/rest/xml",xmlString,"application/xml");
 
             mcm.setCommunicationEventListener(response -> {
-                reception.setText(response);
+                String s = response.substring(response.indexOf("</infos>") + 8, response.length() - 1);
+                String s1 = response.substring(response.indexOf("<directory>"), response.indexOf("<infos>")) + s;
+
+                reception.setText(s1);
+
+                Directory des = null;
+
+                try {
+                   des =  serializer.read(Directory.class, s1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Log.println(Log.INFO,"Serialisation",des.toString());
                 return true;
             });
         });
     }
 
-    private static class directory{
+    private static class Directory{
 
-         person person = null;
-        directory(person persons){
+        @ElementList(inline = true,required = false)
+         List<Person> person = null;
+
+        @Element(required=false)
+        String infos = "";
+
+        Directory(List<Person> persons,String infos){
             this.person = persons;
+            this.infos = infos;
         }
+
+        Directory(){
+            this.person = null;
+            this.infos = "";
+        }
+
+        @Override
+        public String toString(){
+            String s ="";
+            for (Person p: person){
+                s += p.toString() + "\n";
+            }
+            return s;
+        }
+
     }
 
-    @Default
+
+    @Root(name = "person")
     @Order(elements={"name", "firstname", "gender", "phone"})
-    private static class person{
+    private static class Person{
         @Element
         private String name;
         @Element
         private String firstname;
         @Element
         private String gender;
-        @Element
+        @Element(type = Phone.class)
         private Phone  phone;
 
         public SerialisationActivity.Phone getPhone() {
@@ -128,11 +168,17 @@ public class SerialisationActivity  extends AppCompatActivity {
         }
 
 
-        public person(String firstName, String lastName,String gender,Phone phone){
+        public Person(String firstName, String lastName,String gender,Phone phone){
             this.firstname = firstName;
             this.name = lastName;
             this.gender = gender;
             this.phone = phone;
+        }
+        public Person(){
+            this.firstname = "";
+            this.name = "";
+            this.gender = "";
+            this.phone = null;
         }
 
         public String toString(){
@@ -140,9 +186,9 @@ public class SerialisationActivity  extends AppCompatActivity {
         }
     }
 
-    @Root
+    @Root(name = "phone")
     private static class Phone{
-        @Element
+        @Text
         private String phone;
         @Attribute
         private String type;
@@ -151,6 +197,10 @@ public class SerialisationActivity  extends AppCompatActivity {
            this.phone = phone;
            this.type = type;
        }
+        public Phone(){
+            this.phone = "";
+            this.type = "";
+        }
 
         public String getPhone() {
             return phone;
@@ -159,6 +209,8 @@ public class SerialisationActivity  extends AppCompatActivity {
         public String getType() {
             return type;
         }
+
+
 
     }
 }
