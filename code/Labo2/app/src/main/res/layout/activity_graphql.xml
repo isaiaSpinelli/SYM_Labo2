@@ -14,12 +14,11 @@
         android:textColor="@color/colorAccent"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/msgToSend"
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="106dp"
-        android:background="#CDF44336"
-        android:text="@string/msgToSend" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown" />
 
     <TextView
         android:id="@+id/textView3"
@@ -32,8 +31,9 @@
     <TextView
         android:id="@+id/msgToGet"
         android:layout_width="match_parent"
-        android:layout_height="111dp"
+        android:layout_height="334dp"
         android:background="#B74CAF50"
+        android:fadeScrollbars="false"
         android:text="@string/msgToGet" />
 
 </LinearLayout>

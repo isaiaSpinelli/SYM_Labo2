@@ -4,8 +4,12 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -65,8 +69,9 @@ public class SymComManager extends AsyncTask {
     protected String doInBackground(Object[] objects) {
 
         HttpURLConnection urlSocket = null;
-        byte bufferReponse[] = new byte[2000] ;
+        byte bufferReponse[] = new byte[65000] ;
         InputStream inputError;
+        String resp ="";
 
         String reqest = (String) objects[1];
 
@@ -80,8 +85,18 @@ public class SymComManager extends AsyncTask {
             if(errorCode != 200){
                 inputError = urlSocket.getErrorStream();
                 inputError.read(bufferReponse);
+                resp = new String(bufferReponse);
+
+
             }else{
-                urlSocket.getInputStream().read(bufferReponse);
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(urlSocket.getInputStream()));
+                StringBuilder total = new StringBuilder();
+                for (String line; (line = r.readLine()) != null; ) {
+                    total.append(line).append('\n');
+                }
+                resp = total.toString();
+
             }
 
 
@@ -94,7 +109,7 @@ public class SymComManager extends AsyncTask {
             if(urlSocket != null)
                 urlSocket.disconnect();
         }
-        return new String(bufferReponse);
+        return resp ;
     }
 
     @Override
