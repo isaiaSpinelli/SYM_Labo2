@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+/* Classe permettant d'envoyer des requêtes asychrone */
 public class SymComManager extends AsyncTask {
 
     private static final String TAG = SymComManager.class.getSimpleName();
@@ -21,11 +21,11 @@ public class SymComManager extends AsyncTask {
     private static final String DEFAULT_NETWORK = "LTE";
 
     private CommunicationEventListener communicationEventListener = null;
-
+    /* Envoie une requête à un serveur*/
     public void sendRequest(String url, String request) {
        sendRequest(url,request,DEFAULT_DATA_TYPE, DEFAULT_ENCODING, DEFAULT_NETWORK );
     }
-
+    /* Envoie une requête à un serveur avec un type de donnée autre que text/plain */
     public void sendRequest(String url, String request,String dataType) {
        Object back[] = {(Object) url,(Object)request,(Object)dataType, DEFAULT_ENCODING, DEFAULT_NETWORK};
 
@@ -45,7 +45,7 @@ public class SymComManager extends AsyncTask {
         this.communicationEventListener = communicationEventListener;
     }
 
-
+    /* Permet d'obtenir une connection à un serveur avec des en-têtes définies */
     private  HttpURLConnection connection(String url,String dataType, String Encoding, String Network)throws IOException{
 
         HttpURLConnection urlConnection =(HttpURLConnection)new URL(url).openConnection();
@@ -66,6 +66,7 @@ public class SymComManager extends AsyncTask {
 
 
     @Override
+    /* Fonction apeller lors de l'apelle de .execute*/
     protected String doInBackground(Object[] objects) {
 
         HttpURLConnection urlSocket = null;
@@ -81,7 +82,7 @@ public class SymComManager extends AsyncTask {
             urlSocket.connect();
 
             int errorCode = urlSocket.getResponseCode();
-
+            /* Si il y a une erreur*/
             if(errorCode != 200){
                 inputError = urlSocket.getErrorStream();
                 inputError.read(bufferReponse);
