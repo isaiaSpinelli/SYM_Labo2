@@ -1,15 +1,11 @@
 package asynComm;
 
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import java.io.BufferedInputStream;
+import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -41,6 +37,12 @@ public class SymComManager extends AsyncTask {
         this.execute(back);
     }
 
+    public void sendRequest(String url, byte[] request,String dataType, String Encoding, String Network) {
+        Object back[] = {(Object) url,(Object)request, (Object)dataType, (Object)Encoding, (Object)Network};
+
+        this.execute(back);
+    }
+
     public void setCommunicationEventListener(CommunicationEventListener communicationEventListener) {
         this.communicationEventListener = communicationEventListener;
     }
@@ -66,18 +68,29 @@ public class SymComManager extends AsyncTask {
 
 
     @Override
-    protected String doInBackground(Object[] objects) {
+    protected Object doInBackground(Object[] objects) {
 
         HttpURLConnection urlSocket = null;
         byte bufferReponse[] = new byte[65000] ;
         InputStream inputError;
         String resp ="";
+        byte[] byesResp =new byte[65000];
 
-        String reqest = (String) objects[1];
+        String reqest;
+        Boolean DataIsByte = false;
+        byte[] bytesData = null;
+        if(objects[1] instanceof String){
+            reqest = (String) objects[1];
+            bytesData = reqest.getBytes();
+        }else if(objects[1] instanceof byte[]){
+            DataIsByte = true;
+            bytesData = (byte[]) objects[1];
+        }
+
 
         try {
             urlSocket = connection((String) objects[0],(String) objects[2], (String) objects[3], (String) objects[4]);
-            urlSocket.getOutputStream().write(reqest.getBytes());
+            urlSocket.getOutputStream().write(bytesData);
             urlSocket.connect();
 
             int errorCode = urlSocket.getResponseCode();
@@ -89,13 +102,17 @@ public class SymComManager extends AsyncTask {
 
 
             }else{
-
-                BufferedReader r = new BufferedReader(new InputStreamReader(urlSocket.getInputStream()));
-                StringBuilder total = new StringBuilder();
-                for (String line; (line = r.readLine()) != null; ) {
-                    total.append(line).append('\n');
+                if(!DataIsByte) {
+                    BufferedReader r = new BufferedReader(new InputStreamReader(urlSocket.getInputStream()));
+                    StringBuilder total = new StringBuilder();
+                    for (String line; (line = r.readLine()) != null; ) {
+                        total.append(line).append('\n');
+                    }
+                    resp = total.toString();
                 }
-                resp = total.toString();
+                else{
+                    urlSocket.getInputStream().read(byesResp);
+                }
 
             }
 
@@ -109,6 +126,9 @@ public class SymComManager extends AsyncTask {
             if(urlSocket != null)
                 urlSocket.disconnect();
         }
+        if(DataIsByte){
+            return byesResp;
+        }
         return resp ;
     }
 
@@ -117,7 +137,7 @@ public class SymComManager extends AsyncTask {
         super.onPostExecute(s);
 
         try {
-            communicationEventListener.handleServerResponse( (String) s);
+            communicationEventListener.handleServerResponse(s);
         } catch (Exception e) {
             e.printStackTrace();
         }

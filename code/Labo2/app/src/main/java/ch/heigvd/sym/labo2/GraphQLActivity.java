@@ -43,11 +43,7 @@ public class GraphQLActivity  extends AppCompatActivity {
 
     //Création d'une liste d'élément à mettre dans le Spinner(pour l'exemple)
     private List auteurList = new ArrayList();
-
-
-
-
-
+    private String response;
 
 
     @Override
@@ -84,7 +80,9 @@ public class GraphQLActivity  extends AppCompatActivity {
 
         SymComManager mcm = new SymComManager();
 
-        mcm.setCommunicationEventListener(response -> {
+        mcm.setCommunicationEventListener(resp -> {
+            // Récéption de la réponse
+            this.response = (String) resp;
             Log.println(Log.INFO,"GraphQLAuteur",response);
             try {
                 JSONArray authorsArray = new JSONObject(response).getJSONObject("data").getJSONArray("allAuthors");
@@ -122,7 +120,9 @@ public class GraphQLActivity  extends AppCompatActivity {
 
         SymComManager mcm = new SymComManager();
 
-        mcm.setCommunicationEventListener(response -> {
+        mcm.setCommunicationEventListener(resp -> {
+            // Récéption de la réponse
+            this.response = (String) resp;
             Log.println(Log.INFO,"GraphQLAuteur",response);
 
             try{

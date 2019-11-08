@@ -40,6 +40,8 @@ public class SerialisationActivity  extends AppCompatActivity {
     private TextView envoi = null;
     private Button envoiJSON = null;
     private Button envoiXML = null;
+    private String response;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,9 @@ public class SerialisationActivity  extends AppCompatActivity {
 
 
             //On suppose que votre classe d'accès est nommée SymComManagerSymComManager
-            mcm.setCommunicationEventListener(response -> {
+            mcm.setCommunicationEventListener(resp -> {
+                // Récéption de la réponse
+                this.response = (String) resp;
 
                 reception.setText(response);
 
@@ -101,7 +105,9 @@ public class SerialisationActivity  extends AppCompatActivity {
 
             mcm.sendRequest( "http://sym.iict.ch/rest/xml",xmlString,"application/xml");
 
-            mcm.setCommunicationEventListener(response -> {
+            mcm.setCommunicationEventListener(resp -> {
+                // Récéption de la réponse
+                this.response = (String) resp;
                 String s = response.substring(response.indexOf("</infos>") + 8, response.length() - 1);
                 String s1 = response.substring(response.indexOf("<directory>"), response.indexOf("<infos>")) + s;
 
