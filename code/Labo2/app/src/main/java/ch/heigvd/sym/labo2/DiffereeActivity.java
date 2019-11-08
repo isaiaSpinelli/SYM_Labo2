@@ -40,6 +40,7 @@ public class DiffereeActivity  extends AppCompatActivity {
 
     private final int PERIODE = 5000;
     private final String SERVEUR = "http://sym.iict.ch/rest/txt";
+    private String response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,9 @@ public class DiffereeActivity  extends AppCompatActivity {
     private void sendAllRequest(){
         SymComManager mcm = new SymComManager();
         for (String request : toSendList) {
-            mcm.setCommunicationEventListener(response -> {
+            mcm.setCommunicationEventListener(resp -> {
+                // Récéption de la réponse
+                this.response = (String) resp;
                 reception.setText(response);
                 Log.println(Log.INFO, "differre", response);
                 return true;

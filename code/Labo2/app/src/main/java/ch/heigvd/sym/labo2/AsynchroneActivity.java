@@ -20,6 +20,7 @@ public class AsynchroneActivity  extends AppCompatActivity {
     private TextView reception = null;
     private EditText envoi = null;
     private Button buttEnvoi = null;
+    private String response;
 
 
     @Override
@@ -34,8 +35,11 @@ public class AsynchroneActivity  extends AppCompatActivity {
         buttEnvoi.setOnClickListener((v) -> {
 
             SymComManager mcm = new SymComManager() ;
-            mcm.setCommunicationEventListener(response -> {
-                reception.setText(response);
+            
+            //On suppose que votre classe d'accès est nommée SymComManagerSymComManager
+            mcm.setCommunicationEventListener(resp -> {
+                // Récéption de la réponse
+                this.response = (String) resp;
                 return true;
             });
 

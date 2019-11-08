@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -30,6 +31,8 @@ public class CompresseeActivity  extends AppCompatActivity {
     private TextView reception = null;
     private EditText envoi = null;
     private Button buttEnvoi = null;
+    private String response = null;
+    private byte[] respcomp = null;
 
     private final String SERVEUR = "http://sym.iict.ch/rest/txt";
 
@@ -40,6 +43,7 @@ public class CompresseeActivity  extends AppCompatActivity {
         reception = findViewById(R.id.msgToGet);
         envoi = findViewById(R.id.msgToSend);
         buttEnvoi = findViewById(R.id.buttEnvoi);
+
 
         // Lors de l'appui du bouton
         buttEnvoi.setOnClickListener((v) -> {
@@ -55,17 +59,20 @@ public class CompresseeActivity  extends AppCompatActivity {
 
                     SymComManager mcm = new SymComManager();
 
-                    mcm.setCommunicationEventListener(response -> {
+                    mcm.setCommunicationEventListener(resp -> {
                         // Récéption de la réponse
-                        reception.setText(response);
+                        this.response = new String((byte[]) resp);
+                        respcomp = new byte[response.indexOf("\n")];
 
                         try {
                             // enlever l'entete
                             String reponseNet = response.substring(0, response.indexOf("\n") );
+                            reception.setText(reponseNet);
+                            System.arraycopy(resp,0,respcomp,0,reponseNet.length());
+
                             // Si c'est correte, decomprese les datas
-                            String decompresseData = "Decompression impossible...";
-                            if (reponseNet.equals(compressedDatastr))
-                                decompresseData = decompresse( compressedData );
+                            String decompresseData = "";
+                            decompresseData = decompresse( respcomp );
                             // affiche les data decompressées
                             Toast.makeText(CompresseeActivity.this, "Resultat de la decompression : " + decompresseData, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
@@ -75,7 +82,7 @@ public class CompresseeActivity  extends AppCompatActivity {
                     });
 
                     // Envoie la requête des données compressée
-                    mcm.sendRequest(SERVEUR, compressedDatastr, "text/plain","gzip, deflate","CSD");
+                    mcm.sendRequest(SERVEUR, compressedData, "text/plain","gzip, deflate","CSD");
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -121,7 +128,7 @@ public class CompresseeActivity  extends AppCompatActivity {
         InflaterInputStream iis = new InflaterInputStream(bais, inflater);
 
         String result = "";
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[30000];
         int rlen = -1;
         while ((rlen = iis.read(buf)) != -1) {
             result += new String(Arrays.copyOf(buf, rlen));
