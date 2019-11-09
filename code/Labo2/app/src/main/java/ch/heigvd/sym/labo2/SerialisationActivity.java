@@ -52,7 +52,7 @@ public class SerialisationActivity  extends AppCompatActivity {
         envoiXML = findViewById(R.id.buttXML);
 
         reception.setMovementMethod(new ScrollingMovementMethod());
-
+        // Lorsque le bouton sera cliqué, envoie les data JSON
         envoiJSON.setOnClickListener((v) -> {
             SymComManager mcm = new SymComManager() ;
             Person isaia  = new Person("Isaia","Spinel1i","m",new Phone("0984","home"));
@@ -77,7 +77,7 @@ public class SerialisationActivity  extends AppCompatActivity {
 
 
         });
-
+        // Lorsque le bouton sera cliqué, envoie les data XML
         envoiXML.setOnClickListener((v) -> {
 
             List<Person> list = new ArrayList();
@@ -102,9 +102,9 @@ public class SerialisationActivity  extends AppCompatActivity {
 
             envoi.setText(xmlString);
 
-
+            // Envoie la requête
             mcm.sendRequest( "http://sym.iict.ch/rest/xml",xmlString,"application/xml");
-
+            // Quand la réponse arrivera
             mcm.setCommunicationEventListener(resp -> {
                 // Récéption de la réponse
                 this.response = (String) resp;

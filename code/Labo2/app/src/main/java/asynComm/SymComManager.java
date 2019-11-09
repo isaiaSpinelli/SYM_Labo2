@@ -95,7 +95,7 @@ public class SymComManager extends AsyncTask {
             urlSocket.connect();
 
             int errorCode = urlSocket.getResponseCode();
-            /* Si il y a une erreur*/
+            /* Si il y a une erreur */
             if(errorCode != 200){
                 inputError = urlSocket.getErrorStream();
                 inputError.read(bufferReponse);

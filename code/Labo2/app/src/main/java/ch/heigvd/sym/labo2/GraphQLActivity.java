@@ -55,14 +55,14 @@ public class GraphQLActivity  extends AppCompatActivity {
         reception.setMovementMethod(new ScrollingMovementMethod());
 
         GenerateAutorsListe();
-
+        // Quand un item est selectionné
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 int index = arg0.getSelectedItemPosition();
                 Toast.makeText(getBaseContext(), "You have selected item : " + auteurList.get(index), Toast.LENGTH_SHORT).show();
-
+                // Recupère le post de l'auteur
                 getPostByAutor((Authors) auteurList.get(index));
 
             }
@@ -75,11 +75,11 @@ public class GraphQLActivity  extends AppCompatActivity {
         });
 
     }
-
+    // Génère la liste d'auteur
     private void GenerateAutorsListe() {
 
         SymComManager mcm = new SymComManager();
-
+        // Quand une réponse arrivera
         mcm.setCommunicationEventListener(resp -> {
             // Récéption de la réponse
             this.response = (String) resp;
@@ -113,13 +113,14 @@ public class GraphQLActivity  extends AppCompatActivity {
         mcm.sendRequest("http://sym.iict.ch/api/graphql",GetAllAuthors,"application/json");
     }
 
+    // Récupère les posts d'auteurs
     private List<Post> getPostByAutor(Authors a){
 
         //Création d'une liste d'élément à mettre dans le Spinner(pour l'exemple)
          List<Post> PostList = new ArrayList();
 
         SymComManager mcm = new SymComManager();
-
+        // Quand un réponse arrivera
         mcm.setCommunicationEventListener(resp -> {
             // Récéption de la réponse
             this.response = (String) resp;

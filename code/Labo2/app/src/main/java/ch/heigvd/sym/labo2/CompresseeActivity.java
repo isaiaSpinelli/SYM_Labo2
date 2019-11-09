@@ -58,14 +58,14 @@ public class CompresseeActivity  extends AppCompatActivity {
                     String compressedDatastr = compressedData.toString();
 
                     SymComManager mcm = new SymComManager();
-
+                    // Quand une réponse arrivera
                     mcm.setCommunicationEventListener(resp -> {
                         // Récéption de la réponse
                         this.response = new String((byte[]) resp);
                         respcomp = new byte[response.indexOf("\n")];
 
                         try {
-                            // enlever l'entete
+                            // Enlever l'en-tete
                             String reponseNet = response.substring(0, response.indexOf("\n") );
                             reception.setText(reponseNet);
                             System.arraycopy(resp,0,respcomp,0,reponseNet.length());

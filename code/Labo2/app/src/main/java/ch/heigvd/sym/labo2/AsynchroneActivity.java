@@ -35,7 +35,7 @@ public class AsynchroneActivity  extends AppCompatActivity {
         buttEnvoi.setOnClickListener((v) -> {
 
             SymComManager mcm = new SymComManager() ;
-            
+
             //On suppose que votre classe d'accès est nommée SymComManagerSymComManager
             mcm.setCommunicationEventListener(resp -> {
                 // Récéption de la réponse

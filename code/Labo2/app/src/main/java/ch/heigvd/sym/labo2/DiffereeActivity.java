@@ -52,7 +52,7 @@ public class DiffereeActivity  extends AppCompatActivity {
 
         // Lors de l'appui du bouton
         buttEnvoi.setOnClickListener((v) -> {
-            // recupere le message a envoyer
+            // Recupere le message a envoyer
             String msgToSend = envoi.getText().toString();
             if (msgToSend.length() > 0) {
                 toSendList.add(msgToSend);
