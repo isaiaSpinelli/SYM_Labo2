@@ -5,6 +5,7 @@ package ch.heigvd.sym.labo2;
  */
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,6 +70,7 @@ public class CompresseeActivity  extends AppCompatActivity {
                             String reponseNet = response.substring(0, response.indexOf("\n") );
                             reception.setText(reponseNet);
                             System.arraycopy(resp,0,respcomp,0,reponseNet.length());
+                            Log.println(Log.INFO,"Taille donnes compress:",String.valueOf(reponseNet.length()));
 
                             // Si c'est correte, decomprese les datas
                             String decompresseData = "";
